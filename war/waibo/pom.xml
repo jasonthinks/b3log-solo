@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Description: B3log Solo GAE POM.
+    Version: 2.0.2.2, Jan 4, 2013
+    Author: Liang Ding
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.b3log</groupId>
+    <artifactId>waibo</artifactId>
+    <packaging>war</packaging>
+    <name>B3log Solo (GAE)</name>
+    <description>
+        B3log Solo Google App Engine war.
+    </description>
+
+    <parent>
+        <groupId>org.b3log</groupId>
+        <artifactId>solo-war</artifactId>
+        <version>0.5.5</version>
+    </parent>
+    
+    <properties>
+        <maven-gae-plugin.version>0.9.4</maven-gae-plugin.version>    
+        <gae.home>C:/app/google_appengine</gae.home>
+        <gae.version>1.7.4</gae.version>
+        <gae.dev_sever.port>80</gae.dev_sever.port>
+    </properties>
+
+    <dependencies>
+
+    <dependency>
+    	<groupId>org.b3log</groupId>
+    	<artifactId>solo-gae</artifactId>
+    	<version>0.5.5</version>
+    	<type>war</type>
+    	<scope>runtime</scope>
+    </dependency>
+    </dependencies>
+    
+    <build>
+    	<finalName>${artifactId}</finalName>
+        <resources>
+            <resource>
+                <directory>../src/main/resources</directory>
+                <excludes>
+                    <exclude>etc/</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        
+        <plugins>
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <configuration>
+                    <header>../../src/main/resources/etc/header.txt</header>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>net.kindleit</groupId>
+                <artifactId>maven-gae-plugin</artifactId>
+                <version>${maven-gae-plugin.version}</version>
+                <configuration>
+                    <serverId>appengine.google.com</serverId>
+<!--                     <sdkDir>F:/Java/appengine-java-sdk-1.7.4</sdkDir> -->
+					<sdkDir>${settings.localRepository}/com/google/appengine/appengine-java-sdk/${gae.version}/appengine-java-sdk-${gae.version}/</sdkDir>
+                    <appDir>${project.build.directory}/${project.build.finalName}</appDir>
+                    <port>${gae.dev_sever.port}</port>
+                    <passIn>true</passIn>
+                    <!-- TODO: http://code.google.com/p/googleappengine/issues/detail?id=6928#c7 -->
+                    <jvmFlags>
+                        <jvmFlag>-Dappengine.user.timezone=UTC</jvmFlag>
+                    </jvmFlags>
+                </configuration>
+                <dependencies>
+                	<dependency>
+			    		<groupId>com.google.appengine</groupId>
+			    		<artifactId>appengine-java-sdk</artifactId>
+			    		<version>1.7.4</version>
+			    		<type>zip</type>
+			    	</dependency>
+                </dependencies>
+            </plugin>
+
+            
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+                            <resources>          
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>              
+                        </configuration>            
+                    </execution>
+                </executions>
+            </plugin>
+<!--             <plugin> -->
+<!--                 <artifactId>maven-resources-plugin</artifactId> -->
+<!--                 <version>2.6</version> -->
+<!--                 <executions> -->
+<!--                     <execution> -->
+<!--                         <id>copy-resources</id> -->
+<!--                         <phase>process-resources</phase> -->
+<!--                         <goals> -->
+<!--                             <goal>copy-resources</goal> -->
+<!--                         </goals> -->
+<!--                         <configuration> -->
+<!--                             <outputDirectory>${basedir}/target/${project.build.finalName}</outputDirectory> -->
+<!--                             <resources>           -->
+<!--                                 <resource> -->
+<!--                                     <directory>src/main/webapp</directory> -->
+<!--                                     <filtering>true</filtering> -->
+<!--                                 </resource> -->
+<!--                             </resources>               -->
+<!--                         </configuration>             -->
+<!--                     </execution> -->
+<!--                 </executions> -->
+<!--             </plugin> -->
+        </plugins>
+    </build>
+</project>
+

@@ -27,6 +27,7 @@
         <module>bae</module>
         <module>mysql</module>
         <module>h2</module>
+        <module>waibo</module>
     </modules>
 
     <dependencies>
